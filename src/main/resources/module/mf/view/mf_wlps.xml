@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view name="mf_wlps" title="物料配送" >
+	<panel>
+		<panel-body>
+		<datepaginator name="paginator_wlps" startdate="1990-01-01" enddate="2099-12-31" isWeek="true" sizing="large" format="YYYY-MM-DD"  onSelectedDateChanged="OnSelectedDateChanged" layoutconstraint="md:12;sm:12;"><attribute name="text"><![CDATA[MM月DD日<br/>dddd]]></attribute></datepaginator>
+		<normal-actions>
+			<button name="queryBtn_wl" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow_wl"></button>
+		</normal-actions>
+		<table name="table_wlzb" scroll="false"  caption="物料准备"  url="/wlps/table_djzb?wllb=('40','50')"  pagesize = "200" showpager="false" >
+			<column label="机台(地点)" name="sbwz" key="true"></column>
+			<column label="物料编号" name="wlbh"></column>
+			<column label="物料名称" name="wlmc"></column>
+			<column label="规格" name="wlgg"></column>
+			<column label="数量" name="zbsl"></column>
+			<column label="毛坯炉号" name="mplh"></column>
+			<column label="生产批号" name="scrwbh"></column>
+			<column label="配送时间" name="ydwsj" type="datetime"></column>
+		</table>
+		<normal-actions>
+			<button name="queryBtn_dj" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow_dj"></button>
+		</normal-actions>
+		<table name="table_djzb" scroll="false"  caption="刀具准备"  url="/wlps/table_djzb?wllb=('10')" pagesize = "200" showpager="false"  >
+			<column label="机台(地点)" name="sbwz"></column>
+			<column label="刀具编号" name="wlbh"></column>
+			<column label="刀具名称" name="wlmc"></column>
+			<column label="物料条码" name="wltm"></column>
+			<column label="规格" name="wlgg"></column>
+			<column label="数量" name="zbsl"></column>
+			<column label="计量单位" name="dwdm" type="dict" dictionary="JLDW"></column>
+			<column label="配送时间" name="ydwsj" type="datetime"></column>
+		</table>
+		<normal-actions>
+			<button name="queryBtn_qt" label="查询"  type="button" icon="icon-query" onClick="openQueryWindow_qt"></button>
+		</normal-actions>
+		<table name="table_qtzb"  caption="其他工装准备"  scroll="false"  url="/wlps/table_djzb?wllb=('20','30')" pagesize = "200" showpager="false"  >
+			<column label="机台(地点)" name="sbwz"></column>
+			<column label="工装编号" name="wlbh"></column>
+			<column label="工装名称" name="wlmc"></column>
+			<column label="规格" name="wlgg"></column>
+			<column label="数量" name="zbsl"></column>
+			<column label="计量单位" name="dwdm" type="dict" dictionary="JLDW"></column>
+			<column label="配送时间" name="ydwsj" type="datetime"></column>
+		</table>
+		</panel-body>
+	</panel>
+	<modal name="qyeryModal_wl" heading="查询物料" sizing="large" show="false" keyboard="true"  onShown="qyeryModalOnShown_wl">
+		<modal-body>
+			<form name="form_wl"  horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="query_wlbh_wl" text="物料编号" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlbh_wl" placeholder="请输入物料类型编号" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_wlmc_wl" text="物料名称" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlmc_wl" placeholder="请输入物料名称" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_sbwz_wl" text="机台(地点)" layoutconstraint="md:2;sm:2"/>
+						<text name="query_sbwz_wl" placeholder="请输入机台(地点)" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_ydwsjstart_wl" text="配送时间" layoutconstraint="md:2"/>
+						<bunch layoutconstraint="md:8">
+							<input-inline width="medium">
+							<date name="query_ydwsjstart_wl" placeholder="请输入起始时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+							<plaintext text="-"/>
+							<input-inline width="medium">
+							<date name="query_ydwsjend_wl" placeholder="请输入结束时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+						</bunch>
+ 					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="closeqyeryModalClick_wl" label="取消" type="button" context="primary"  onClick="closeQueryWindow_wl"></button>
+			<button name="qyeryModalClick_wl" label="查询" type="button" context="primary" onClick="queryBtnClick_wl"></button>
+		</modal-footer>
+	</modal>
+	<modal name="qyeryModal_dj" heading="查询刀具" sizing="large" show="false" keyboard="true"  onShown="qyeryModalOnShown_dj">
+		<modal-body>
+			<form name="form_dj"  horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="query_wlbh_dj" text="刀具编号" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlbh_dj" placeholder="请输入物料类型编号" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_wlmc_dj" text="刀具名称" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlmc_dj" placeholder="请输入物料名称" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_sbwz_dj" text="机台(地点)" layoutconstraint="md:2;sm:2"/>
+						<text name="query_sbwz_dj" placeholder="请输入机台(地点)" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_ydwsjstart_dj" text="配送时间" layoutconstraint="md:2"/>
+						<bunch layoutconstraint="md:8">
+							<input-inline width="medium">
+							<date name="query_ydwsjstart_dj" placeholder="请输入起始时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+							<plaintext text="-"/>
+							<input-inline width="medium">
+							<date name="query_ydwsjend_dj" placeholder="请输入结束时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+						</bunch>
+ 					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="closeqyeryModalClick_dj" label="取消" type="button" context="primary"  onClick="closeQueryWindow_dj"></button>
+			<button name="qyeryModalClick_dj" label="查询" type="button" context="primary" onClick="queryBtnClick_dj"></button>
+		</modal-footer>
+	</modal>
+	<modal name="qyeryModal_qt" heading="查询其他工装" sizing="large" show="false" keyboard="true"  onShown="qyeryModalOnShown_qt">
+		<modal-body>
+			<form name="form_qt"  horizontal="true">
+				<form-body>
+					<form-group>
+						<label for="query_wlbh_qt" text="工装编号" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlbh_qt" placeholder="请输入物料类型编号" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_wlmc_qt" text="工装名称" layoutconstraint="md:2;sm:2"/>
+						<text name="query_wlmc_qt" placeholder="请输入物料名称" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_sbwz_qt" text="机台(地点)" layoutconstraint="md:2;sm:2"/>
+						<text name="query_sbwz_qt" placeholder="请输入机台(地点)" layoutconstraint="md:7;sm:7;"/>
+					</form-group>
+					<form-group>
+						<label for="query_ydwsjstart_qt" text="配送时间" layoutconstraint="md:2"/>
+						<bunch layoutconstraint="md:8">
+							<input-inline width="medium">
+							<date name="query_ydwsjstart_qt" placeholder="请输入起始时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+							<plaintext text="-"/>
+							<input-inline width="medium">
+							<date name="query_ydwsjend_qt" placeholder="请输入结束时间" validate="{required:true}" format="HH:mm:ss"/>
+							</input-inline>
+						</bunch>
+ 					</form-group>
+				</form-body>
+			</form>
+		</modal-body>
+		<modal-footer>
+			<button name="closeqyeryModalClick_qt" label="取消" type="button" context="primary"  onClick="closeQueryWindow_qt"></button>
+			<button name="qyeryModalClick_qt" label="查询" type="button" context="primary" onClick="queryBtnClick_qt"></button>
+		</modal-footer>
+	</modal>
+	<attribute name="javascript">
+	<![CDATA[
+		var date_wlps;
+		function OnSelectedDateChanged(date) {
+		    date_wlps = moment(date).format("YYYY-MM-DD");
+			ui.table("table_wlzb").search({query_date:date_wlps});
+			ui.table("table_djzb").search({query_date:date_wlps});
+			ui.table("table_qtzb").search({query_date:date_wlps});
+		}
+		
+		
+		function queryBtnClick_wl(){
+			var data_row = {};
+			data_row.query_wlbh = $('#query_wlbh_wl').val();
+			data_row.query_wlmc = $('#query_wlmc_wl').val();
+			data_row.query_sbwz = $('#query_sbwz_wl').val();
+			data_row.query_ydwsjstart = ''+$('#query_ydwsjstart_wl').val();
+			data_row.query_ydwsjend = ''+$('#query_ydwsjend_wl').val();
+			data_row.query_date = date_wlps;
+			ui.table("table_wlzb").search(data_row);
+			closeQueryWindow_wl();
+		}
+		function openQueryWindow_wl() {
+	    	ui.modal("qyeryModal_wl").show();
+	    }
+		function closeQueryWindow_wl() {
+	    	ui.modal("qyeryModal_wl").hide();
+	    }
+	    function qyeryModalOnShown_wl() {
+	    	 $('#form_wl')[0].reset();
+	    }
+	    
+	    
+		function queryBtnClick_dj(){
+			var data_row = {};
+			data_row.query_wlbh = $('#query_wlbh_dj').val();
+			data_row.query_wlmc = $('#query_wlmc_dj').val();
+			data_row.query_sbwz = $('#query_sbwz_dj').val();
+			data_row.query_ydwsjstart = ''+$('#query_ydwsjstart_dj').val();
+			data_row.query_ydwsjend = ''+$('#query_ydwsjend_dj').val();
+			data_row.query_date = date_wlps;
+			ui.table("table_djzb").search(data_row);
+			closeQueryWindow_dj();
+		}
+		function openQueryWindow_dj() {
+	    	ui.modal("qyeryModal_dj").show();
+	    }
+		function closeQueryWindow_dj() {
+	    	ui.modal("qyeryModal_dj").hide();
+	    }
+	    function qyeryModalOnShown_dj() {
+	    	 $('#form_dj')[0].reset();
+	    }
+	    
+	    
+		function queryBtnClick_qt(){
+			var data_row = {};
+			data_row.query_wlbh = $('#query_wlbh_qt').val();
+			data_row.query_wlmc = $('#query_wlmc_qt').val();
+			data_row.query_sbwz = $('#query_sbwz_qt').val();
+			data_row.query_ydwsjstart = ''+$('#query_ydwsjstart_qt').val();
+			data_row.query_ydwsjend = ''+$('#query_ydwsjend_qt').val();
+			data_row.query_date = date_wlps;
+			ui.table("table_qtzb").search(data_row);
+			closeQueryWindow_qt();
+		}
+		function openQueryWindow_qt() {
+	    	ui.modal("qyeryModal_qt").show();
+	    }
+		function closeQueryWindow_qt() {
+	    	ui.modal("qyeryModal_qt").hide();
+	    }
+	    function qyeryModalOnShown_qt() {
+	    	 $('#form_qt')[0].reset();
+	    }
+	]]>
+	</attribute>
+</view>

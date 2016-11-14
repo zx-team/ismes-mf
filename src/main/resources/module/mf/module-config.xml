@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="mf" version="1.0.0" category="system">
+	<information>
+		<name>System User Management</name>
+		<vendor>
+			<name>Isesol isMES</name>
+			<url>http://www.isesol.com/</url>
+		</vendor>
+		<description>User is a module which adds user functionality to system.</description>
+		<license>AGPL</license>
+	</information>
+	<activities>
+		<activity name="wlps" dialect="java" roles="MATERIAL_DELIVERY_ROLE" class="com.isesol.mes.ismes.mf.activity.WlpsActivity"/>
+		<activity name="service" dialect="java"  class="com.isesol.mes.ismes.mf.service.GzsdService"/>
+	</activities>
+	<roles>
+		<role name="MATERIAL_DELIVERY_ROLE" label="物料配送员_物流管理" description="物料配送"/>
+	</roles>
+	<menus>
+		<!-- 生产管理（一级） -->
+		<category name="produce_manager" label="生产管理" icon="#539de7;Production_management"  weight="4"/>
+		<menu name="material_distribution" label="物料配送" activity="wlps" activity-method="query_wlps" 
+ 			 category="produce_manager" roles="MATERIAL_DELIVERY_ROLE" description="物料配送" icon="button" weight="10"/>
+	</menus>
+	<services>
+		<service name = "mfservice_gzsd" activity = "wlps" activity-method = "saveGzsd"></service>
+		<service name = "mfservice_wlsd" activity = "wlps" activity-method = "saveWlsd"></service>
+		<service name = "mfservice_gzjs" activity = "wlps" activity-method = "saveGzjs"></service>
+		<service name = "mfservice_wlsdls" activity = "wlps" activity-method = "saveWlsdls"></service>
+		<service name = "mfservice_gzjsls" activity = "wlps" activity-method = "saveGzjsls"></service>
+		<service name = "mfservice_querySl" activity = "wlps" activity-method = "querySl"></service>
+		<service name = "mfservice_queryMaxZhsdsj" activity = "wlps" activity-method = "queryMaxZhsdsj"></service>
+		<service name = "mfservice_queryMaxGzzhxx" activity = "wlps" activity-method = "queryMaxGzzhxx"></service>
+		
+		<service name = "mfService_query_gzxx_by_wltm" activity = "service" activity-method = "query_gzxx_by_wltm"></service>
+		<service name = "mfService_query_gzxx_by_sbbh" activity = "service" activity-method = "query_gzxx_by_sbbh"></service>
+	</services>
+</module>
